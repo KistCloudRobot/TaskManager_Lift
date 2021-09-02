@@ -1,0 +1,32 @@
+PREFIXES:
+		PREFIX isro: <http://www.arbi.com//BuiltInPlan#>;
+
+PLAN CONCLUDE PostRackSeparated($object, $location) {
+	ID: "http://www.arbi.com//BuiltInPlan#PostRackSeparated"
+	PRECONDITION:
+	BODY:
+		RETRACT PostRackSeparated($object, $location);
+		POST ACHIEVE RackSeparated($object, $location);
+}
+
+
+PLAN perform RackSeparated($object, $location){
+	ID: "http://www.arbi.com//BuiltInPlan#RackSeparated"
+	PRECONDITION:
+		FACT Communication($communicationInstance);
+		FACT isro:BehaviorAddress($address);
+		FACT GLUtility($glUtility);
+		FACT RobotAt($robot, $vertex1, $vertex2);
+	BODY:
+		PERFORM  isro:startLog("PERFORM", "RackSeparated");
+		PERFORM  UpdateAgentTaskStatus("RackSeparated", "start");
+		
+		PERFORM RequestStationVertex($location);
+		RETRIEVE StationVertex($location, $stationVertex);
+		PERFORM isro:RequestUnload($stationVertex);
+		RETRACT StationVertex($location, $stationVertex);
+						
+		
+		PERFORM  UpdateAgentTaskStatus("RackSeparated", "complete");
+		PERFORM isro:endLog("PERFORM", "RackSeparated");
+}

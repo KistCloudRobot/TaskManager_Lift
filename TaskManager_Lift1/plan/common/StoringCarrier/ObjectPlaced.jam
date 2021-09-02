@@ -1,0 +1,40 @@
+PREFIXES:
+		PREFIX isro: <http://www.arbi.com//BuiltInPlan#>;
+
+PLAN CONCLUDE PostObjectPlaced($object, $location) {
+	ID: "http://www.arbi.com//BuiltInPlan#PostObjectPlaced"
+	PRECONDITION:
+	BODY:
+		RETRACT PostObjectPlaced($object, $location);
+		POST ACHIEVE ObjectPlaced($object, $location);
+
+}
+
+
+PLAN perform ObjectPlaced($object, $location){
+	ID: "http://www.arbi.com//BuiltInPlan#ObjectPlaced"
+	PRECONDITION:
+		FACT Communication($communicationInstance);
+		FACT isro:BehaviorAddress($address);
+		FACT GLUtility($glUtility);
+		FACT RobotAt($robot, $vertex1, $vertex2);
+		FACT  isro:ReasonerAddress("agent://www.arbi.com/Lift1/TaskReasoner");
+	BODY:
+		PERFORM  isro:startLog("PERFORM", "ObjectPlaced");
+		PERFORM  UpdateAgentTaskStatus("ObjectPlaced", "start");
+		PERFORM  isro:argumentLog("robot", $robot);
+		PERFORM  isro:argumentLog("location", $location);
+		
+		PERFORM RequestStationVertex($location);
+		RETRIEVE StationVertex($location, $stationVertex);
+		PERFORM isro:RequestUnload($stationVertex);
+		
+		RETRACT StationVertex($location, $stationVertex);
+						
+		
+		PERFORM  UpdateAgentTaskStatus("ObjectPlaced", "complete");
+		PERFORM isro:endLog("PERFORM", "ObjectPlaced");
+
+		$communicationInstance.inform($reasoner, "(goalComplete (ObjectPlaced \"" + $object +"\" \"" + $location + "\"))");
+
+}

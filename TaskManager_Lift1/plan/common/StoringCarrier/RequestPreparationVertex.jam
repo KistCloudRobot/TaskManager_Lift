@@ -1,0 +1,21 @@
+
+PREFIXES:
+		PREFIX isro: <http://www.arbi.com//BuiltInPlan#>;
+
+
+PLAN perform RequestPreparationVertex($location, $vertex) {
+	ID: "http://www.arbi.com//BuiltInPlan#RequestPreparationVertex"
+	PRECONDITION :
+		FACT isro:ContextManagerAddress($address);
+		FACT Communication($communicationInstance);
+		FACT GLUtility($glUtility);
+	BODY :
+		PERFORM  isro:startLog("PERFORM", "RequestPreparationVertex");
+		
+		$queryResult = $communicationInstance.sendQuery($address, "(preparationVertex \"" + $location + "\" $vertex)");
+		
+		$glUtility.assertGL($queryResult);
+			
+		PERFORM  isro:endLog("PERFORM", "RequestPreparationVertex");
+	
+}

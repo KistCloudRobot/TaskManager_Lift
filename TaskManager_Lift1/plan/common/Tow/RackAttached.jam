@@ -1,0 +1,58 @@
+PREFIXES:
+		PREFIX isro: <http://www.arbi.com//BuiltInPlan#>;
+
+
+PLAN CONCLUDE PostRackAttached($object, $location) {
+	ID: "http://www.arbi.com//BuiltInPlan#PostRackAttached"
+	PRECONDITION:
+	BODY:
+		RETRACT PostRackAttached($object, $location);
+		POST ACHIEVE RackAttached($object, $location);
+
+}
+
+
+PLAN PERFORM RackAttached($object, $location){
+	ID: "http://www.arbi.com//BuiltInPlan#RackAttachedWhenDoorOpened"
+	PRECONDITION:
+		FACT Communication($communicationInstance);
+		FACT isro:BehaviorAddress($address);
+		FACT GLUtility($glUtility);
+		FACT RobotAt($robot, $vertex1, $vertex2);
+		FACT DoorStatus("Opened");
+	BODY:
+		PERFORM  isro:startLog("PERFORM", "RackAttached");
+		PERFORM  UpdateAgentTaskStatus("RackAttached", "start");
+		
+		PERFORM RequestStationVertex($location);
+		RETRIEVE StationVertex($location, $stationVertex);
+		PERFORM isro:RequestLoad($stationVertex);
+		
+		RETRACT StationVertex($location, $stationVertex);
+						
+		PERFORM  UpdateAgentTaskStatus("RackAttached", "complete");
+		PERFORM isro:endLog("PERFORM", "RackAttached");
+		
+}
+
+PLAN PERFORM RackAttached($object, $location){
+	ID: "http://www.arbi.com//BuiltInPlan#RackAttached"
+	PRECONDITION:
+		FACT Communication($communicationInstance);
+		FACT isro:BehaviorAddress($address);
+		FACT GLUtility($glUtility);
+		FACT RobotAt($robot, $vertex1, $vertex2);
+	BODY:
+		PERFORM  isro:startLog("PERFORM", "RackAttached");
+		PERFORM  UpdateAgentTaskStatus("RackAttached", "start");
+		
+		PERFORM RequestStationVertex($location);
+		RETRIEVE StationVertex($location, $stationVertex);
+		PERFORM isro:RequestLoad($stationVertex);
+		
+		RETRACT StationVertex($location, $stationVertex);
+						
+		PERFORM  UpdateAgentTaskStatus("RackAttached", "complete");
+		PERFORM isro:endLog("PERFORM", "RackAttached");
+	UTILITY : 1;
+}

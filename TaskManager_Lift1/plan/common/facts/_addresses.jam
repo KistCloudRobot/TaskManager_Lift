@@ -1,0 +1,17 @@
+PREFIXES:
+		PREFIX isro: <http://www.arbi.com//BuiltInPlan#>;
+
+
+FACTS:	
+	FACT  isro:TaskLogAddress("agent://www.arbi.com/Lift1/TaskLog");
+	FACT  isro:ActionAddress("agent://www.arbi.com/Lift1/action");
+	FACT  isro:BehaviorAddress("agent://www.arbi.com/Lift1/BehaviourInterface");
+	FACT  isro:ReasonerAddress("agent://www.arbi.com/Lift1/TaskReasoner");
+	FACT  isro:ContextManagerAddress("agent://www.arbi.com/Lift1/ContextManager");
+	FACT  isro:NavigationControllerAddress("agent://www.arbi.com/Local/NavigationController");
+	FACT  isro:LocalTaskManagerAddress("agent://www.arbi.com/Local/TaskManager");
+	/*
+	FACT  isro:KnowledgeManagerAddress("agent://www.arbi.com/LIFT1/knowledgeManager");
+	FACT  isro:PerceptionAddress("agent://www.arbi.com/perception");
+	FACT  isro:DialogueAddress("agent://www.arbi.com/dialogueManager");
+	*/
