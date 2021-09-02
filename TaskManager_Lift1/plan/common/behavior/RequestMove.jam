@@ -9,6 +9,8 @@ PLAN PERFORM isro:RequestMove($path){
 		FACT isro:BehaviorAddress($address);
 		FACT GLUtility($glUtility);
 		FACT ExtraUtility($helper);
+		FACT OnRobotTaskStatus($robot, $status);
+		$status == "Ready";
 		
 	BODY:
 		PERFORM isro:startLog("PERFORM", "RequestMove");

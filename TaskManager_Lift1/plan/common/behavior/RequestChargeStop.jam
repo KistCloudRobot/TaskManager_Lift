@@ -9,6 +9,8 @@ PLAN PERFORM isro:RequestChargeStop($vertex){
 		FACT isro:BehaviorAddress($address);
 		FACT GLUtility($glUtility);
 		FACT ExtraUtility($helper);
+		FACT OnRobotTaskStatus($robot, $status);
+		$status == "Charge";
 		
 	BODY:
 		PERFORM isro:startLog("PERFORM", "RequestChargeStop");

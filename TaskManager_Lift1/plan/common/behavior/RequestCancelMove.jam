@@ -9,6 +9,8 @@ PLAN PERFORM isro:RequestCancelMove(){
 		FACT isro:BehaviorAddress($address);
 		FACT GLUtility($glUtility);
 		FACT ExtraUtility($helper);
+		FACT OnRobotTaskStatus($robot, $status);
+		$status == "Move";
 		
 	BODY:
 		PERFORM isro:startLog("PERFORM", "RequestCancelMove");
