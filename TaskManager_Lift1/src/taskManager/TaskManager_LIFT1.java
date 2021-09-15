@@ -28,15 +28,22 @@ public class TaskManager_LIFT1 extends ArbiAgent {
 	private TaskManagerLogger logger;
 	private boolean isTriggered = false;
 	private APLViewer aplViewer;
+	
+	public static String ENV_JMS_BROKER;
+	public static String ENV_AGENT_NAME;
+	public static String ENV_ROBOT_NAME;
+	public static final String ARBI_PREFIX = "www.arbi.com/";
+	public static final String BASE_AGENT_NAME = "/TaskManager";
+	
 	public static final String JMS_BROKER_URL = "tcp://172.16.165.135:61115";
 	//public static final String JMS_BROKER_URL = "tcp://localhost:61616";
 	public static final String TASKMANAGER_ADRESS = "www.arbi.com/Lift2/TaskManager";
-	public static final String CONTEXTMANAGER_ADRESS = "agent://www.arbi.com/Lift2/ContextManager";
-	public static final String KNOWLEDGEMANAGER_ADRESS = "agent://www.arbi.com/Lift2/KnowledgeManager";
-	public static final String BEHAVIOUR_INTERFACE_ADDRESS = "agent://www.arbi.com/Lift2/BehaviourInterface";
+	public static  String CONTEXTMANAGER_ADRESS = "agent://www.arbi.com/Lift2/ContextManager";
+	public static  String KNOWLEDGEMANAGER_ADRESS = "agent://www.arbi.com/Lift2/KnowledgeManager";
+	public static  String BEHAVIOUR_INTERFACE_ADDRESS = "agent://www.arbi.com/Lift2/BehaviourInterface";
 	public static final String PERCEPTION_ADRESS = "agent://www.arbi.com/perception";
 	public static final String ACTION_ADRESS = "agent://www.arbi.com/Lift1/action";
-	public static final String REASONER_ADRESS = "agent://www.arbi.com/Lift1/TaskReasoner";
+	public static  String REASONER_ADRESS = "agent://www.arbi.com/Lift1/TaskReasoner";
 	public static final String PREFIX = "http://www.arbi.com//ontologies#";
 	
 
@@ -46,7 +53,11 @@ public class TaskManager_LIFT1 extends ArbiAgent {
 
 	
 	public TaskManager_LIFT1() {
-		ArbiAgentExecutor.execute(JMS_BROKER_URL, AGENT_PREFIX + TASKMANAGER_ADRESS, this,2);
+		
+
+		initAddress();
+		
+		ArbiAgentExecutor.execute("tcp://" + ENV_JMS_BROKER, AGENT_PREFIX + ARBI_PREFIX + ENV_AGENT_NAME + BASE_AGENT_NAME, this,2);
 		interpreter = JAM.parse(new String[] { "plan/boot.jam" });
 		messageQueue = new LinkedBlockingQueue<RecievedMessage>();
 		
@@ -57,6 +68,16 @@ public class TaskManager_LIFT1 extends ArbiAgent {
 		init();
 	}
 	
+
+	public void initAddress() {
+		ENV_JMS_BROKER = System.getenv("JMS_BROKER");
+		ENV_AGENT_NAME = System.getenv("AGENT");
+		ENV_ROBOT_NAME = System.getenv("ROBOT");
+		
+		CONTEXTMANAGER_ADRESS =  AGENT_PREFIX + ARBI_PREFIX + ENV_AGENT_NAME + "/ContextManager"; 
+		REASONER_ADRESS =  AGENT_PREFIX + ARBI_PREFIX + ENV_AGENT_NAME + "/TaskReasoner"; 
+		BEHAVIOUR_INTERFACE_ADDRESS = AGENT_PREFIX + ARBI_PREFIX + ENV_AGENT_NAME + "/BehaviorInterface"; 
+	}
 	public void test(){
 		
 		if(isTriggered == false){
@@ -73,6 +94,19 @@ public class TaskManager_LIFT1 extends ArbiAgent {
 		msgManager.assertFact("Communication", new CommunicationUtility(this, dc));
 		msgManager.assertFact("ExtraUtility", new JAMUtilityManager(interpreter));
 		msgManager.assertFact("TaskManager", this);
+		
+		msgManager.assertFact("isro:ReasonerAddress", REASONER_ADRESS);
+		msgManager.assertFact("isro:ContextManagerAddress", CONTEXTMANAGER_ADRESS);
+		msgManager.assertFact("isro:BehaviorAddress", BEHAVIOUR_INTERFACE_ADDRESS);
+
+		msgManager.assertFact("isro:robot", ENV_ROBOT_NAME);
+		msgManager.assertFact("isro:agent", ENV_AGENT_NAME);
+		msgManager.assertFact("OnAgentTaskStatus", ENV_AGENT_NAME, "wait", "wait");
+		msgManager.assertFact("RobotAt", ENV_ROBOT_NAME, 0, 0);
+		msgManager.assertFact("RobotVelocity", ENV_ROBOT_NAME, 0);
+		msgManager.assertFact("BatteryRemain", ENV_ROBOT_NAME, 50);
+		msgManager.assertFact("OnRobotTaskStatus", ENV_ROBOT_NAME, "wait");
+		
 		//aplViewer.init();
 		
 		Thread t = new Thread() {
