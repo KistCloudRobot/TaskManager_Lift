@@ -11,13 +11,14 @@ PLAN PERFORM isro:RequestCancelMove(){
 		FACT ExtraUtility($helper);
 		FACT OnRobotTaskStatus($robot, $status);
 		$status == "Move";
+		FACT isro:agent($agent);
 		
 	BODY:
 		PERFORM isro:startLog("PERFORM", "RequestCancelMove");
 		
-		$actionID = $helper.getActionID();
+		$actionID = $helper.getActionID($agent);
 			
-		$communicationInstance.request($address, "(cancelMove (actionID " + $actionID + "))");
+		$communicationInstance.request($address, "(cancelMove (actionID \"" + $actionID + "\"))");
 				
 		System.out.println("wait id" + $actionID);
 		WAIT actionCompleted($actionID);

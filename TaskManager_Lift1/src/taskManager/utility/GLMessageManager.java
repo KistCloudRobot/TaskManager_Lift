@@ -143,6 +143,9 @@ public class GLMessageManager {
 	}
 	public String retrieveGLName(String glString) {
 		String result = "";
+		if (glString.startsWith("\"")) {
+			glString = removeQuotationMarks(glString);
+		}
 		try {
 			GeneralizedList gl = GLFactory.newGLFromGLString(glString);
 			result = gl.getName();
@@ -187,9 +190,9 @@ public class GLMessageManager {
 			for (int i = 0; i < gl.getExpressionsSize(); i++) {
 				String expressionValue = gl.getExpression(i).toString();
 				expressionValue = this.removeQuotationMarks(expressionValue);
-				// if(expressionValue.startsWith("$")) {
+				if(expressionValue.startsWith("$")) {
 				expressionValue = "null";
-				// }
+				}
 				expList.add(new Value(expressionValue));
 			}
 
@@ -353,6 +356,9 @@ public class GLMessageManager {
 
 	public String retrieveGLExpression(String input, int i) {
 		String result = "";
+		if (input.startsWith("\"")) {
+			input = removeQuotationMarks(input);
+		}
 		try {
 			GeneralizedList gl = GLFactory.newGLFromGLString(input);
 			result = gl.getExpression(i).toString();
@@ -509,5 +515,14 @@ public class GLMessageManager {
 				e.printStackTrace();
 			}
 		}
+	}
+	public String escapeGL(String gl) {
+		System.out.println("start escape : " + gl);
+		String result = GLFactory.escape(gl);
+		System.out.println(result);
+		return result;
+	}
+	public String unescapeGL(String gl) {
+		return GLFactory.unescape(gl);
 	}
 }

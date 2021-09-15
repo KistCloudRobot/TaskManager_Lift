@@ -5,13 +5,11 @@ PREFIXES:
 PLAN perform isro:UpdateAgentTaskStatus($goal, $status){
 	ID: "http://www.arbi.com//BuiltInPlan#UpdateAgentTaskStatus"
 	PRECONDITION:
-		FACT onAgentTaskStatus($agent, $oldGoal, $oldStatus);
+		FACT OnAgentTaskStatus($agent, $oldGoal, $oldStatus);
 		FACT GLUtility($glUtility);
 		FACT Communication($communicationInstance);
 	BODY:
-		$data = "(update (context (onAgentTaskStatus $agent $oldGoal $oldStatus)) (context (onAgentTaskStatus \"" + $agent + "\", \"" + $goal +"\",  \"" + $status + "\")))";
-		$communicationInstance.updateFact($data);
-		//UPDATE (onAgentTaskStatus($agent, $oldGoal, $oldStatus)) (onAgentTaskStatus($agent, $goal, $status));
-		//ASSERT ContextUpdated("onAgentTaskStatus");
-	UTILITY: 1; 
+		$data = "(update (context (OnAgentTaskStatus $agent $oldGoal $oldStatus)) (context (OnAgentTaskStatus \"" + $agent + "\" \"" + $goal +"\"  \"" + $status + "\")))";
+		$communicationInstance.updateToLTM($data);
+	UTILITY: 10; 
 }

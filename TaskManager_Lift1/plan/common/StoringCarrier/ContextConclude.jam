@@ -4,15 +4,17 @@ PREFIXES:
 
 PLAN CONCLUDE RobotAt($robot, $vertex1, $vertex2) {
 	ID: "http://www.arbi.com//BuiltInPlan#PermissionRobotAt"
+	PRECONDITION :
+		
 	BODY:
 		PERFORM  isro:startLog("CONCLUDE", "RobotAt");
 
-		RETRIEVE isro:LocalTaskManagerAddress($agent);
+		RETRIEVE isro:LocalTaskManagerAddress($localAgent);
 		$data = "(RobotAt \"" + $robot + "\" " + $vertex1 + " " + $vertex2 + ")";
-		PERFORM NotifyPermmittedContext($agent, $data);
+		PERFORM NotifyPermmittedContext($localAgent, $data);
 		
 		PERFORM  isro:endLog("CONCLUDE", "RobotAt");
-	UTILITY : 1;
+	UTILITY : 100;
 }
 
 
@@ -21,24 +23,24 @@ PLAN CONCLUDE BatteryRemain($robot, $battery) {
 	BODY:
 		PERFORM  isro:startLog("CONCLUDE", "BatteryRemain");
 
-		RETRIEVE isro:LocalTaskManagerAddress($agent);
+		RETRIEVE isro:LocalTaskManagerAddress($localAgent);
 		$data = "(BatteryRemain \"" + $robot + "\" " + $battery  + ")";
-		PERFORM NotifyPermmittedContext($agent, $data);
+		PERFORM NotifyPermmittedContext($localAgent, $data);
 		
 		PERFORM  isro:endLog("CONCLUDE", "BatteryRemain");
-	UTILITY : 1;
+	UTILITY : 100;
 }
 PLAN CONCLUDE RobotVelocity($robot, $velocity) {
 	ID: "http://www.arbi.com//BuiltInPlan#PermissionRobotVelocity"
 	BODY:
 		PERFORM  isro:startLog("CONCLUDE", "RobotVelocity");
 
-		RETRIEVE isro:LocalTaskManagerAddress($agent);
+		RETRIEVE isro:LocalTaskManagerAddress($localAgent);
 		$data = "(RobotVelocity \"" + $robot + "\" " + $velocity+ ")";
-		PERFORM NotifyPermmittedContext($agent, $data);
+		PERFORM NotifyPermmittedContext($localAgent, $data);
 		
 		PERFORM  isro:endLog("CONCLUDE", "RobotVelocity");
-	UTILITY : 1;
+	UTILITY : 100;
 }
 
 PLAN CONCLUDE OnRobotTaskStatus($robot, $status) {
@@ -46,12 +48,12 @@ PLAN CONCLUDE OnRobotTaskStatus($robot, $status) {
 	BODY:
 		PERFORM  isro:startLog("CONCLUDE", "OnRobotTaskStatus");
 
-		RETRIEVE isro:LocalTaskManagerAddress($agent);
+		RETRIEVE isro:LocalTaskManagerAddress($localAgent);
 		$data = "(OnRobotTaskStatus \"" + $robot + "\" \"" + $status+ "\")";
-		PERFORM NotifyPermmittedContext($agent, $data);
+		PERFORM NotifyPermmittedContext($localAgent, $data);
 		
 		PERFORM  isro:endLog("CONCLUDE", "OnRobotTaskStatus");
-	UTILITY : 1;
+	UTILITY : 100;
 }
 
 PLAN CONCLUDE OnAgentTaskStatus($agent, $task, $status) {
@@ -59,10 +61,10 @@ PLAN CONCLUDE OnAgentTaskStatus($agent, $task, $status) {
 	BODY:
 		PERFORM  isro:startLog("CONCLUDE", "OnAgentTaskStatus");
 
-		RETRIEVE isro:LocalTaskManagerAddress($agent);
+		RETRIEVE isro:LocalTaskManagerAddress($localAgent);
 		$data = "(OnAgentTaskStatus \"" + $agent + "\" \"" + $task + "\" \"" + $status+ "\")";
-		PERFORM NotifyPermmittedContext($agent, $data);
+		PERFORM NotifyPermmittedContext($localAgent, $data);
 		
 		PERFORM  isro:endLog("CONCLUDE", "OnAgentTaskStatus");
-	UTILITY : 1;
+	UTILITY : 100;
 }

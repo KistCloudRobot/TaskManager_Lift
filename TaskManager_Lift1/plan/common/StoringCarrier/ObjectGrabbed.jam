@@ -6,36 +6,33 @@ PLAN CONCLUDE PostObjectGrabbed($object, $location) {
 	ID: "http://www.arbi.com//BuiltInPlan#PostObjectGrabbed"
 	PRECONDITION:
 	BODY:
+		POST PERFORM ObjectGrabbed($object, $location);
 		RETRACT PostObjectGrabbed($object, $location);
-		POST ACHIEVE ObjectGrabbed($object, $location);
-
+	
+	UTILITY : 10000;
 }
 
 
-PLAN ACHIEVE ObjectGrabbed($object, $location){
+PLAN PERFORM ObjectGrabbed($object, $location){
 	ID: "http://www.arbi.com//BuiltInPlan#ObjectGrabbed"
 	PRECONDITION:
 		FACT Communication($communicationInstance);
 		FACT isro:BehaviorAddress($address);
 		FACT GLUtility($glUtility);
 		FACT RobotAt($robot, $vertex1, $vertex2);
-		FACT  isro:ReasonerAddress("agent://www.arbi.com/Lift1/TaskReasoner");
+		FACT isro:ReasonerAddress($reasoner);
 		
 	BODY:
 		PERFORM  isro:startLog("PERFORM", "ObjectGrabbed");
-		PERFORM  UpdateAgentTaskStatus("ObjectGrabbed", "start");
-		PERFORM  isro:argumentLog("robot", $robot);
-		PERFORM  isro:argumentLog("location", $location);
+		PERFORM  isro:UpdateAgentTaskStatus("ObjectGrabbed", "start");
 		
-		PERFORM RequestStationVertex($location);
-		RETRIEVE StationVertex($location, $stationVertex);
+		PERFORM isro:QueryStationVertex($location, $stationVertex);
 		PERFORM isro:RequestLoad($stationVertex);
 		
-		RETRACT StationVertex($location, $stationVertex);
-						
-		PERFORM  UpdateAgentTaskStatus("ObjectGrabbed", "complete");
+		PERFORM  isro:UpdateAgentTaskStatus("ObjectGrabbed", "complete");
 		PERFORM isro:endLog("PERFORM", "ObjectGrabbed");
 		
 		$communicationInstance.inform($reasoner, "(goalComplete (ObjectGrabbed \"" + $object +"\" \"" + $location + "\"))");
+	UTILITY: 10; 
 
 }

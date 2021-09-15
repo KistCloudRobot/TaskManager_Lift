@@ -4,6 +4,7 @@ PREFIXES:
 	
 	
 FACTS:	
+/*
 	fact RoleBinded("StoringManager", "Local");
 	fact RoleBinded("StoringCarrier", "Lift1");
 	fact RoleBinded("UnstoringManager", "Local");
@@ -16,3 +17,4 @@ FACTS:
 	
 	fact ContextCreator("onStation", "StoringManager");
 	fact ContextCreator("onStation", "UnstoringManager");
+	*/

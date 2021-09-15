@@ -9,15 +9,16 @@ PLAN PERFORM isro:RequestCharge($vertex){
 		FACT isro:BehaviorAddress($address);
 		FACT GLUtility($glUtility);
 		FACT ExtraUtility($helper);
-		FACT OnRobotTaskStatus($robot, $status);
-		$status == "Ready";
+		//FACT OnRobotTaskStatus($robot, $status);
+		//$status == "Ready";
+		FACT isro:agent($agent);
 		
 	BODY:
 		PERFORM isro:startLog("PERFORM", "RequestCharge");
 		
-		$actionID = $helper.getActionID();
+		$actionID = $helper.getActionID($agent);
 			
-		$communicationInstance.request($address, "(charge (actionID " + $actionID + ") " + $vertex + ")");
+		$communicationInstance.request($address, "(charge (actionID \"" + $actionID + "\") " + $vertex + ")");
 				
 		System.out.println("wait id" + $actionID);
 		WAIT actionCompleted($actionID);

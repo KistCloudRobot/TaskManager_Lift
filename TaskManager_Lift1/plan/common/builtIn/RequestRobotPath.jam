@@ -14,9 +14,11 @@ PLAN perform isro:RequestRobotPath($startVertex, $endVertex, $path) {
 		
 		$data = "(RobotPath \"" + $robot + "\" " + $startVertex +" "+ $endVertex +" $path)";
 		
-		$communicationInstance.request($address, $data);
-		PERFORM WaitRobotPath();
-		RETRIEVE RobotPath($robot, $startVertex, $endVertex, $path);
+		$result = $communicationInstance.request($address, $data);
+		
+		$path = $glUtility.retrieveGLExpression($result, 1);
+		
+		System.out.println("path is " + $path);
 		
 		PERFORM  isro:endLog("PERFORM", "RequestRobotPath");
 	UTILITY: 1; 

@@ -28,12 +28,12 @@ public class TaskManager_LIFT1 extends ArbiAgent {
 	private TaskManagerLogger logger;
 	private boolean isTriggered = false;
 	private APLViewer aplViewer;
-	public static final String JMS_BROKER_URL = "tcp://172.16.165.135:61116";
+	public static final String JMS_BROKER_URL = "tcp://172.16.165.135:61115";
 	//public static final String JMS_BROKER_URL = "tcp://localhost:61616";
-	public static final String TASKMANAGER_ADRESS = "www.arbi.com/Lift1/TaskManager";
-	public static final String CONTEXTMANAGER_ADRESS = "agent://www.arbi.com/Lift1/ContextManager";
-	public static final String KNOWLEDGEMANAGER_ADRESS = "agent://www.arbi.com/Lift1/KnowledgeManager";
-	public static final String BEHAVIOUR_INTERFACE_ADDRESS = "agent://www.arbi.com/Lift1/BehaviourInterface";
+	public static final String TASKMANAGER_ADRESS = "www.arbi.com/Lift2/TaskManager";
+	public static final String CONTEXTMANAGER_ADRESS = "agent://www.arbi.com/Lift2/ContextManager";
+	public static final String KNOWLEDGEMANAGER_ADRESS = "agent://www.arbi.com/Lift2/KnowledgeManager";
+	public static final String BEHAVIOUR_INTERFACE_ADDRESS = "agent://www.arbi.com/Lift2/BehaviourInterface";
 	public static final String PERCEPTION_ADRESS = "agent://www.arbi.com/perception";
 	public static final String ACTION_ADRESS = "agent://www.arbi.com/Lift1/action";
 	public static final String REASONER_ADRESS = "agent://www.arbi.com/Lift1/TaskReasoner";
@@ -163,15 +163,12 @@ public class TaskManager_LIFT1 extends ArbiAgent {
 					packageName = packageName.substring(1, packageName.length() - 1);
 					initServicePackage(packageName);
 				} else if(gl.getName().equals("context")){
-					String recievedContext = "(ContextRecieved " + gl.getExpression(0).toString() + ")";
+					String recievedContext = "(ContextRecieved "+ gl.getExpression(0).toString() + ")";
 					msgManager.assertGL(recievedContext);
 				} else if(gl.getName().equals("relationChanged")) {
 					String relationChanged = "(relationChanged " + gl.getExpression(0).toString() + ")";
 					msgManager.assertGL(relationChanged);
-				} else if(gl.getExpression(0).asGeneralizedList().getName().equals("actionID")) { 
-					String actionResult = "(actionCompleted "+ gl.getExpression(0).asGeneralizedList().getExpression(0) + ")";
-					msgManager.assertGL(actionResult);
-				} else if (gl.getName().equals("RobotPath")) {
+				}  else if (gl.getName().equals("RobotPath")) {
 					msgManager.assertGL(gl.toString());
 					msgManager.assertGL("(RobotPathUpdated)");
 				} else if (gl.getName().equals("GoalReport")) {
@@ -179,6 +176,12 @@ public class TaskManager_LIFT1 extends ArbiAgent {
 				} else if (gl.getName().equals("GoalRequest")) {
 					GeneralizedList goalGL = gl.getExpression(0).asGeneralizedList();
 					msgManager.assertFact(goalGL.getName() + "RequestedFrom", sender, goalGL.getExpression(1), goalGL.getExpression(2));
+				} else if(gl.getExpression(0).isGeneralizedList()) { 
+					if (gl.getExpression(0).asGeneralizedList().getName().equals("actionID") &&
+							gl.getExpression(1).asValue().stringValue().equals("success")) {
+						String actionResult = "(actionCompleted "+ gl.getExpression(0).asGeneralizedList().getExpression(0) + ")";
+						msgManager.assertGL(actionResult);	
+					}
 				}
 				
 				else {

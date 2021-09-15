@@ -5,11 +5,14 @@ PREFIXES:
 FACTS:	
 	
 	
-	fact ActionID(1);
-	fact isro:robot("AMR_LIFT1");
-	fact isro:agent("Lift1");
+	fact isro:robot("AMR_LIFT2");
+	fact isro:agent("Lift2");
+	fact OnAgentTaskStatus("Lift2", "wait", "wait");
+	fact RobotAt("AMR_LIFT2", 102,102);
+	fact RobotVelocity("AMR_LIFT2", 0);
+	fact BatteryRemain("AMR_LIFT2", 50);
+	fact OnRobotTaskStatus("AMR_LIFT2", "Ready");
 	/*
-	fact RobotAt("AMR_LIFT1", 1,1);
 	fact RobotVelocity("AMR_LIFT1", 0);
 	fact BatteryRemain("AMR_LIFT1", 50);
 	fact OnRobotTaskStatus("AMR_LIFT1", "Ready");

@@ -11,13 +11,14 @@ PLAN PERFORM isro:RequestChargeStop($vertex){
 		FACT ExtraUtility($helper);
 		FACT OnRobotTaskStatus($robot, $status);
 		$status == "Charge";
+		FACT isro:agent($agent);
 		
 	BODY:
 		PERFORM isro:startLog("PERFORM", "RequestChargeStop");
 		
-		$actionID = $helper.getActionID();
+		$actionID = $helper.getActionID($agent);
 			
-		$communicationInstance.request($address, "(chargeStop (actionID " + $actionID + ") " + $vertex + ")");
+		$communicationInstance.request($address, "(chargeStop (actionID \"" + $actionID + "\") " + $vertex + ")");
 				
 		System.out.println("wait id" + $actionID);
 		WAIT actionCompleted($actionID);

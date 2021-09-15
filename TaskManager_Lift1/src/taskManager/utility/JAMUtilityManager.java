@@ -48,12 +48,12 @@ public class JAMUtilityManager {
 		return utilityValue;
 	}
 	
-	public int getActionID() {
+	public String getActionID(String agentName) {
 		_lock.writeLock().lock();
 		try {
 			actionID += 1;
 			System.out.println("actionID retrieved");
-			return actionID;
+			return agentName + "_" + actionID;
 		} finally {
 			_lock.writeLock().unlock();
 		}

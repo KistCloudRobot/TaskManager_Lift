@@ -8,15 +8,16 @@ PLAN PERFORM isro:RequestLoad($vertex){
 		FACT isro:BehaviorAddress($address);
 		FACT GLUtility($glUtility);
 		FACT ExtraUtility($helper);
-		FACT OnRobotTaskStatus($robot, $status);
-		$status == "Ready";
+		//FACT OnRobotTaskStatus($robot, $status);
+		//$status == "Ready";
+		FACT isro:agent($agent);
 		
 	BODY:
 		PERFORM isro:startLog("PERFORM", "isro:RequestLoad");
 		
-		$actionID = $helper.getActionID();
+		$actionID = $helper.getActionID($agent);
 			
-		$communicationInstance.request($address, "(load (actionID " + $actionID + ") " + $vertex + ")");
+		$communicationInstance.request($address, "(load (actionID \"" + $actionID + "\") " + $vertex + ")");
 				
 		System.out.println("wait id" + $actionID);
 		WAIT actionCompleted($actionID);
