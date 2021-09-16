@@ -1,0 +1,13 @@
+PREFIXES:
+	PREFIX arbi: <http://www.arbi.com//ontologies#>;
+
+Plan PERFORM loadPlanPackage(){
+	ID: "testLoader"
+	PRECONDITION:
+		FACT ExtraUtility($helper);
+	BODY:
+		$helper.loadPlanPackage("./TaskManagerLiftPlan/intelligence");
+		$helper.loadPlanPackage("./TaskManagerLiftPlan/task");
+		$helper.loadPlanPackage("./TaskManagerLiftPlan/common");
+		$helper.loadPlanPackage("./TaskManagerLiftPlan/external");
+}
