@@ -23,7 +23,7 @@ import uos.ai.jam.Interpreter;
 import uos.ai.jam.JAM;
 import uos.ai.jam.parser.JAMParser;
 
-public class TaskManager_LIFT1 extends ArbiAgent {
+public class TaskManager_LIFT2 extends ArbiAgent {
 	private Interpreter interpreter;
 	private GLMessageManager msgManager;
 	private BlockingQueue<RecievedMessage> messageQueue;
@@ -37,33 +37,29 @@ public class TaskManager_LIFT1 extends ArbiAgent {
 	public static final String ARBI_PREFIX = "www.arbi.com/";
 	public static final String BASE_AGENT_NAME = "/TaskManager";
 	
-	public static final String JMS_BROKER_URL = "tcp://172.16.165.135:61115";
-	//public static final String JMS_BROKER_URL = "tcp://localhost:61616";
-	public static final String TASKMANAGER_ADRESS = "www.arbi.com/Lift2/TaskManager";
-	public static  String CONTEXTMANAGER_ADRESS = "agent://www.arbi.com/Lift2/ContextManager";
-	public static  String KNOWLEDGEMANAGER_ADRESS = "agent://www.arbi.com/Lift2/KnowledgeManager";
-	public static  String BEHAVIOUR_INTERFACE_ADDRESS = "agent://www.arbi.com/Lift2/BehaviourInterface";
-	public static final String PERCEPTION_ADRESS = "agent://www.arbi.com/perception";
-	public static final String ACTION_ADRESS = "agent://www.arbi.com/Lift1/action";
-	public static  String REASONER_ADRESS = "agent://www.arbi.com/Lift1/TaskReasoner";
-	public static final String PREFIX = "http://www.arbi.com//ontologies#";
 	
+	public static  String CONTEXTMANAGER_ADRESS = "";
+	public static  String KNOWLEDGEMANAGER_ADRESS = "";
+	public static  String BEHAVIOUR_INTERFACE_ADDRESS = "";
+	public static  String REASONER_ADRESS = "";
+	public static final String ACTION_ADRESS = "agent://www.arbi.com/Lift2/action";
 
 	public static final String AGENT_PREFIX = "agent://";
 	public static final String DATASOURCE_PREFIX = "ds://";
 	private TaskManagerDataSource dc;
 
 	
-	public TaskManager_LIFT1() {
+	public TaskManager_LIFT2() {
 		
 
 		initAddress();
-		
-		ArbiAgentExecutor.execute("tcp://" + ENV_JMS_BROKER, AGENT_PREFIX + ARBI_PREFIX + ENV_AGENT_NAME + BASE_AGENT_NAME, this,2);
 		interpreter = JAM.parse(new String[] { "./TaskManagerLiftPlan/boot.jam" });
 		messageQueue = new LinkedBlockingQueue<RecievedMessage>();
 		
 		msgManager = new GLMessageManager(interpreter);
+		
+		
+		ArbiAgentExecutor.execute(ENV_JMS_BROKER, AGENT_PREFIX + ARBI_PREFIX + ENV_AGENT_NAME + BASE_AGENT_NAME, this,2);
 		
 //		aplViewer = new APLViewer(interpreter);
 		//logger = new TaskManagerLogger(this,interpreter);
@@ -72,14 +68,19 @@ public class TaskManager_LIFT1 extends ArbiAgent {
 	
 
 	public void initAddress() {
-		ENV_JMS_BROKER = System.getenv("JMS_BROKER");
-		ENV_AGENT_NAME = System.getenv("AGENT");
-		ENV_ROBOT_NAME = System.getenv("ROBOT");
+		//ENV_JMS_BROKER = "tcp://" + System.getenv("JMS_BROKER");
+		//ENV_AGENT_NAME = System.getenv("AGENT");
+		//ENV_ROBOT_NAME = System.getenv("ROBOT");
 		
+		
+		ENV_JMS_BROKER = "tcp://" + System.getenv("JMS_BROKER") + ":61115";
+		ENV_AGENT_NAME = "Lift2";
+		ENV_ROBOT_NAME = "AMR_LIFT2";
 		CONTEXTMANAGER_ADRESS =  AGENT_PREFIX + ARBI_PREFIX + ENV_AGENT_NAME + "/ContextManager"; 
 		REASONER_ADRESS =  AGENT_PREFIX + ARBI_PREFIX + ENV_AGENT_NAME + "/TaskReasoner"; 
 		BEHAVIOUR_INTERFACE_ADDRESS = AGENT_PREFIX + ARBI_PREFIX + ENV_AGENT_NAME + "/BehaviorInterface"; 
 	}
+	
 	public void test(){
 		
 		if(isTriggered == false){
@@ -136,7 +137,7 @@ public class TaskManager_LIFT1 extends ArbiAgent {
 	public void onStart() {
 		dc = new TaskManagerDataSource(this);
 
-		dc.connect("tcp://" + ENV_JMS_BROKER, DATASOURCE_PREFIX + ARBI_PREFIX + ENV_AGENT_NAME + BASE_AGENT_NAME,2);
+		dc.connect(ENV_JMS_BROKER, DATASOURCE_PREFIX + ARBI_PREFIX + ENV_AGENT_NAME + BASE_AGENT_NAME,2);
 
 		System.out.println("======Start Test Agent======");
 		System.out.println("??");
@@ -379,6 +380,6 @@ public class TaskManager_LIFT1 extends ArbiAgent {
 
 	public static void main(String[] args) {
 
-		new TaskManager_LIFT1();
+		new TaskManager_LIFT2();
 	}
 }
