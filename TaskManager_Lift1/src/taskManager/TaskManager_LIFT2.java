@@ -51,7 +51,7 @@ public class TaskManager_LIFT2 extends ArbiAgent {
 	
 	public TaskManager_LIFT2() {
 		
-
+		System.out.println("start");
 		initAddress();
 		interpreter = JAM.parse(new String[] { "./TaskManagerLiftPlan/boot.jam" });
 		messageQueue = new LinkedBlockingQueue<RecievedMessage>();
