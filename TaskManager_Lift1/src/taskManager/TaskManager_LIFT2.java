@@ -73,7 +73,8 @@ public class TaskManager_LIFT2 extends ArbiAgent {
 		//ENV_ROBOT_NAME = System.getenv("ROBOT");
 		
 		
-		ENV_JMS_BROKER = "tcp://" + System.getenv("JMS_BROKER") + ":61115";
+		ENV_JMS_BROKER = "tcp://172.16.165.204" + ":61115";
+		System.out.println(System.getenv());
 		ENV_AGENT_NAME = "Lift2";
 		ENV_ROBOT_NAME = "AMR_LIFT2";
 		CONTEXTMANAGER_ADRESS =  AGENT_PREFIX + ARBI_PREFIX + ENV_AGENT_NAME + "/ContextManager"; 
