@@ -25,6 +25,6 @@ PLAN PERFORM isro:RequestChargeStop($vertex){
 		RETRACT actionCompleted($actionID);
 			
 		PERFORM isro:endLog("PERFORM", "RequestChargeStop");
-	UTILITY: 1; 
+	UTILITY: 10; 
 }
 

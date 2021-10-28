@@ -34,6 +34,8 @@ public class TaskManager_LIFT2 extends ArbiAgent {
 	public static String ENV_JMS_BROKER;
 	public static String ENV_AGENT_NAME;
 	public static String ENV_ROBOT_NAME;
+	public int ENV_WAIT_VERTEX;
+	public int ENV_CHARGE_VERTEX;
 	public static final String ARBI_PREFIX = "www.arbi.com/";
 	public static final String BASE_AGENT_NAME = "/TaskManager";
 	
@@ -71,12 +73,19 @@ public class TaskManager_LIFT2 extends ArbiAgent {
 		//ENV_JMS_BROKER = "tcp://" + System.getenv("JMS_BROKER");
 		//ENV_AGENT_NAME = System.getenv("AGENT");
 		//ENV_ROBOT_NAME = System.getenv("ROBOT");
+		//ENV_WAIT_VERTEX = Integer.parseInt(System.getenv("WAIT"));
+		//ENV_CHARGE_VERTEX = Integer.parseInt(System.getenv("CHARGE"));
 		
 		
-		ENV_JMS_BROKER = "tcp://172.16.165.204" + ":61115";
-		System.out.println(System.getenv());
+		
+		ENV_JMS_BROKER = "tcp://127.0.0.1" + ":61115";
+		//System.out.println(System.getenv());
 		ENV_AGENT_NAME = "Lift2";
 		ENV_ROBOT_NAME = "AMR_LIFT2";
+
+		ENV_WAIT_VERTEX = 202;
+		ENV_CHARGE_VERTEX = 102;
+		
 		CONTEXTMANAGER_ADRESS =  AGENT_PREFIX + ARBI_PREFIX + ENV_AGENT_NAME + "/ContextManager"; 
 		REASONER_ADRESS =  AGENT_PREFIX + ARBI_PREFIX + ENV_AGENT_NAME + "/TaskReasoner"; 
 		BEHAVIOUR_INTERFACE_ADDRESS = AGENT_PREFIX + ARBI_PREFIX + ENV_AGENT_NAME + "/BehaviorInterface"; 
@@ -105,6 +114,11 @@ public class TaskManager_LIFT2 extends ArbiAgent {
 
 		msgManager.assertFact("isro:robot", ENV_ROBOT_NAME);
 		msgManager.assertFact("isro:agent", ENV_AGENT_NAME);
+		
+
+		msgManager.assertFact("WaitVertex", ENV_WAIT_VERTEX);
+		msgManager.assertFact("ChargeStation", ENV_CHARGE_VERTEX);
+		
 		msgManager.assertFact("OnAgentTaskStatus", ENV_AGENT_NAME, "wait", "wait");
 		msgManager.assertFact("RobotAt", ENV_ROBOT_NAME, 0, 0);
 		msgManager.assertFact("RobotVelocity", ENV_ROBOT_NAME, 0);
@@ -128,7 +142,7 @@ public class TaskManager_LIFT2 extends ArbiAgent {
 
 	@Override
 	public void onNotify(String sender, String notification) {
-		System.out.println("recieved Notify from " + sender + " : " + notification);
+//		System.out.println("recieved Notify from " + sender + " : " + notification);
 //		aplViewer.msgReceived(notification, sender);
 		RecievedMessage msg = new RecievedMessage(sender, notification);
 		messageQueue.add(msg);	
@@ -179,7 +193,7 @@ public class TaskManager_LIFT2 extends ArbiAgent {
 
 				gl = GLFactory.newGLFromGLString(data);
 
-				System.out.println("message dequeued : " + gl.toString());
+				//System.out.println("message dequeued : " + gl.toString());
 
 				if (gl.getName().equals("PostGoal")) {
 					//System.out.println("test");
@@ -216,6 +230,7 @@ public class TaskManager_LIFT2 extends ArbiAgent {
 				}
 				
 				else {
+					System.out.println(data);
 					msgManager.assertGL(data);
 				}
 
@@ -262,14 +277,14 @@ public class TaskManager_LIFT2 extends ArbiAgent {
 
 	@Override
 	public void onData(String sender, String data) {
-		System.out.println("recieved data from " + sender + " : " + data);
+		//System.out.println("recieved data from " + sender + " : " + data);
 		RecievedMessage msg = new RecievedMessage(sender, data);
 		messageQueue.add(msg);
 	}
 
 	@Override
 	public String onRequest(String sender, String request) {
-		System.out.println("received data from " + sender + " : " + request);
+		//System.out.println("received data from " + sender + " : " + request);
 		RecievedMessage msg = new RecievedMessage(sender, request);
 		messageQueue.add(msg);
 
