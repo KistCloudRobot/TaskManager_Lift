@@ -224,7 +224,10 @@ public class TaskManager_LIFT2 extends ArbiAgent {
 				} else if(gl.getExpression(0).isGeneralizedList()) { 
 					if (gl.getExpression(0).asGeneralizedList().getName().equals("actionID") &&
 							gl.getExpression(1).asValue().stringValue().equals("success")) {
+						System.out.println("?????" + gl.toString());
+						
 						String actionResult = "(actionCompleted "+ gl.getExpression(0).asGeneralizedList().getExpression(0) + ")";
+						System.out.println(actionResult);
 						msgManager.assertGL(actionResult);	
 					}
 				}
