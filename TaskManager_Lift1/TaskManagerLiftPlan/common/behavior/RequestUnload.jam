@@ -9,7 +9,9 @@ PLAN PERFORM isro:RequestUnload($vertex){
 		FACT isro:BehaviorAddress($address);
 		FACT GLUtility($glUtility);
 		FACT ExtraUtility($helper);
-
+		FACT OnRobotTaskStatus($robot, $status);
+		$status == "Ready";
+		
 		FACT isro:agent($agent);
 		
 	BODY:

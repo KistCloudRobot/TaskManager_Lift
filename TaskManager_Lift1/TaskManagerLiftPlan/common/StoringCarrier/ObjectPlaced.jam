@@ -27,6 +27,7 @@ PLAN PERFORM ObjectPlaced($object, $location){
 		
 		PERFORM isro:QueryStationVertex($location, $stationVertex);
 		
+		$util.sleepAwhile(5000);
 		PERFORM isro:RequestUnload($stationVertex);
 		
 		PERFORM isro:UpdateAgentTaskStatus("ObjectPlaced", "complete");
