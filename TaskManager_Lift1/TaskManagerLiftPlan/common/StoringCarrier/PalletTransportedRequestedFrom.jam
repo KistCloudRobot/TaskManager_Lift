@@ -58,7 +58,7 @@ PLAN PERFORM PalletTransportedReportedTo($manager, $goalID, $goal){
 		
 		PERFORM isro:UpdateAgentTaskStatus("PalletTransportedReportedTo", "complete");
 		PERFORM isro:endLog("PERFORM", "PalletTransportedReportedTo");
-		$communicationInstance.inform($reasoner, "(goalComplete (PalletTransportedReportedTo \"Local\" \"" + $goalID + "\" " + $goal + "))");
+		$communicationInstance.inform($reasoner, "(goalComplete (PalletTransportedReportedTo \"Local\" \"" + $goalID + "\" \"" + $goal + "\"))");
 		perform ReturnToWait();
 	UTILITY: 100; 
 }
