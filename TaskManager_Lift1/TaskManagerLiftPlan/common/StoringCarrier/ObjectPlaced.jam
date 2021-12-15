@@ -12,6 +12,8 @@ PLAN CONCLUDE PostObjectPlaced($object, $location) {
 }
 
 
+
+
 PLAN PERFORM ObjectPlaced($object, $location){
 	ID: "http://www.arbi.com//BuiltInPlan#ObjectPlaced"
 	PRECONDITION:
@@ -25,9 +27,12 @@ PLAN PERFORM ObjectPlaced($object, $location){
 		PERFORM isro:startLog("PERFORM", "ObjectPlaced");
 		PERFORM isro:UpdateAgentTaskStatus("ObjectPlaced", "start");
 		
-		PERFORM isro:QueryStationVertex($location, $stationVertex);
+		PERFORM isro:EnterToStation($location);
 		
+		PERFORM isro:QueryStationVertex($location, $stationVertex);
 		PERFORM isro:RequestUnload($stationVertex);
+		
+		PERFORM isro:ExitFromStation($location);
 		
 		PERFORM isro:UpdateAgentTaskStatus("ObjectPlaced", "complete");
 		PERFORM isro:endLog("PERFORM", "ObjectPlaced");

@@ -12,7 +12,6 @@ PLAN CONCLUDE PostObjectGrabbed($object, $location) {
 	UTILITY : 10000;
 }
 
-
 PLAN PERFORM ObjectGrabbed($object, $location){
 	ID: "http://www.arbi.com//BuiltInPlan#ObjectGrabbed"
 	PRECONDITION:
@@ -26,9 +25,12 @@ PLAN PERFORM ObjectGrabbed($object, $location){
 		PERFORM  isro:startLog("PERFORM", "ObjectGrabbed");
 		PERFORM  isro:UpdateAgentTaskStatus("ObjectGrabbed", "start");
 		
-		PERFORM isro:QueryStationVertex($location, $stationVertex);
+		PERFORM isro:EnterToStation($location);
 		
+		PERFORM isro:QueryStationVertex($location, $stationVertex);
 		PERFORM isro:RequestLoad($stationVertex);
+		
+		PERFORM isro:ExitFromStation($location);
 		
 		PERFORM  isro:UpdateAgentTaskStatus("ObjectGrabbed", "complete");
 		PERFORM isro:endLog("PERFORM", "ObjectGrabbed");
